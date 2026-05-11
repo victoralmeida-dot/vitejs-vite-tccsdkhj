@@ -43,7 +43,7 @@ function Formulario({ taskId, taskName }: { taskId: string; taskName: string }) 
           "Content-Type": "application/json",
           "Authorization": "pk_112105384_LPIVVG6KKNM9SYMAEV62CPZT4I8VAA2N",
         },
-        body: JSON.stringify({ value: { add: selecionados } }),
+        body: JSON.stringify({ value: selecionados }),
       });
       if (res.ok) {
         setEnviado(true);
