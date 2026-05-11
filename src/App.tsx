@@ -37,33 +37,19 @@ function Formulario({ taskId, taskName }: { taskId: string; taskName: string }) 
     setErro("");
     setEnviando(true);
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch(`https://api.clickup.com/api/v2/task/${taskId}/field/${FIELD_ID}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: `Você é um agente que atualiza campos no ClickUp via API.
-Quando receber um taskId, fieldId e valor, confirme apenas com JSON: {"ok": true}.
-Não escreva nada além disso.`,
-          messages: [
-            {
-              role: "user",
-              content: `Registre que o cliente com taskId="${taskId}" selecionou os seguintes parceiros (IDs de labels): ${JSON.stringify(selecionados)}.
-Campo ClickUp: fieldId="${FIELD_ID}".
-Confirme com {"ok": true}.`,
-            },
-          ],
-          mcp_servers: [
-            { type: "url", url: "https://mcp.clickup.com/mcp", name: "clickup" },
-          ],
-        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "pk_112105384_LPIVVG6KKNM9SYMAEV62CPZT4I8VAA2N",
+        },
+        body: JSON.stringify({ value: { add: selecionados } }),
       });
-      const data = await res.json();
-      const txt = data.content?.map((b: any) => b.text || "").join("") || "";
-      if (txt.includes("ok") || res.ok) {
+      if (res.ok) {
         setEnviado(true);
       } else {
+        const err = await res.json();
+        console.error(err);
         setErro("Erro ao salvar. Tente novamente.");
       }
     } catch {
@@ -157,32 +143,14 @@ function PainelConsultor() {
     setLoading(true);
     setErro("");
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: `Você busca tarefas no ClickUp e retorna SOMENTE JSON válido, sem markdown, sem texto extra.
-Formato: {"tasks": [{"id": "...", "name": "..."}], "last_id": "cursor_ou_null", "total": numero}`,
-          messages: [
-            {
-              role: "user",
-              content: `Busque as primeiras 50 tarefas da list_id="${LIST_ID}" no ClickUp${cur ? `, a partir do cursor "${cur}"` : ""}.
-Retorne SOMENTE JSON no formato especificado.`,
-            },
-          ],
-          mcp_servers: [
-            { type: "url", url: "https://mcp.clickup.com/mcp", name: "clickup" },
-          ],
-        }),
+      const url = `https://api.clickup.com/api/v2/list/${LIST_ID}/task?page=0${cur ? `&cursor=${cur}` : ""}&limit=50`;
+      const res = await fetch(url, {
+        headers: { "Authorization": "pk_112105384_LPIVVG6KKNM9SYMAEV62CPZT4I8VAA2N" },
       });
       const data = await res.json();
-      const txt = data.content?.filter((b: any) => b.type === "text").map((b: any) => b.text).join("") || "{}";
-      const clean = txt.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(clean);
-      setClientes((prev) => (cur ? [...prev, ...(parsed.tasks || [])] : parsed.tasks || []));
-      setCursor(parsed.last_id || null);
+      const tasks = (data.tasks || []).map((t: any) => ({ id: t.id, name: t.name }));
+      setClientes((prev) => (cur ? [...prev, ...tasks] : tasks));
+      setCursor(data.last_page ? null : String((data.page || 0) + 1));
     } catch {
       setErro("Erro ao buscar clientes. Verifique a conexão com o ClickUp.");
     }
