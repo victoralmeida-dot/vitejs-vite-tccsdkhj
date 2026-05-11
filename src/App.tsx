@@ -90,6 +90,11 @@ Confirme com {"ok": true}.`,
   return (
     <div style={styles.page}>
       <div style={styles.card}>
+        <img
+          src="https://pages.greatpages.com.br/www.ecommercepuro.com.br/1776877996/imagens/desktop/14938-5a19bd7255a4a0c17fc1ff87fa8ee9a2.png"
+          alt="Ecommerce Puro"
+          style={{ height: 52, objectFit: "contain", marginBottom: 20 }}
+        />
         <h2 style={{ color: "#1a1a2e", marginBottom: 4, textAlign: "center" }}>
           Pesquisa de Parceiros
         </h2>
@@ -340,7 +345,7 @@ export default function App() {
 const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+    background: "#f5f5f5",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -353,10 +358,11 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 32,
     width: "100%",
     maxWidth: 480,
-    boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+    boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    border: "1px solid #eee",
   },
   grid: {
     display: "grid",
@@ -382,7 +388,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#2980b9",
   },
   btn: {
-    background: "linear-gradient(135deg, #3498db, #2980b9)",
+    background: "linear-gradient(135deg, #f97316, #ea580c)",
     color: "#fff",
     border: "none",
     borderRadius: 10,
