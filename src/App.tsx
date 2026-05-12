@@ -130,7 +130,7 @@ function Formulario({ taskId, taskName }: { taskId: string; taskName: string }) 
 function PainelConsultor() {
   const [clientes, setClientes] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
-  const [cursor, setCursor] = useState<string | null>(null);
+
   const [busca, setBusca] = useState("");
   const [copiado, setCopiado] = useState<string | null>(null);
   const [erro, setErro] = useState("");
@@ -225,15 +225,7 @@ function PainelConsultor() {
               >
                 ⬇ Exportar CSV
               </button>
-              {cursor && (
-                <button
-                  onClick={() => buscarClientes(cursor)}
-                  disabled={loading}
-                  style={{ ...styles.btn, background: "#8e44ad", fontSize: 13, padding: "8px 14px" }}
-                >
-                  Carregar mais
-                </button>
-              )}
+
             </div>
 
             <p style={{ fontSize: 12, color: "#888", marginBottom: 8 }}>
