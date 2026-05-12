@@ -66,8 +66,6 @@ function Formulario({ taskId, taskName }: { taskId: string; taskName: string }) 
           <h2 style={{ color: "#1a1a2e", marginBottom: 8 }}>Obrigado!</h2>
           <p style={{ color: "#555", textAlign: "center" }}>
             Suas informações foram salvas com sucesso.
-            <br />
-            Nossa equipe entrará em contato em breve.
           </p>
         </div>
       </div>
@@ -313,7 +311,7 @@ export default function App() {
 const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: "100vh",
-    background: "#f5f5f5",
+    background: "#000000",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
