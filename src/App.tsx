@@ -141,7 +141,7 @@ function PainelConsultor() {
     setLoading(true);
     setErro("");
     try {
-      const url = `https://api.clickup.com/api/v2/list/${LIST_ID}/task?page=0${cur ? `&cursor=${cur}` : ""}&limit=50`;
+      const url = `https://api.clickup.com/api/v2/list/${LIST_ID}/task?page=0${cur ? `&page=${cur}` : ""}&limit=50&statuses[]=em%20andamento`;
       const res = await fetch(url, {
         headers: { "Authorization": "pk_112105384_LPIVVG6KKNM9SYMAEV62CPZT4I8VAA2N" },
       });
