@@ -197,7 +197,7 @@ function PainelConsultor() {
         </p>
 
         {!clientes.length && !loading && (
-          <button onClick={() => buscarClientes()} style={styles.btn}>
+          <button onClick={buscarClientes} style={styles.btn}>
             Buscar clientes do ClickUp
           </button>
         )}
