@@ -137,18 +137,25 @@ function PainelConsultor() {
 
   const baseUrl = typeof window !== "undefined" ? window.location.origin + window.location.pathname : "";
 
-  const buscarClientes = async (cur: string | null = null) => {
+  const buscarClientes = async () => {
     setLoading(true);
     setErro("");
     try {
-      const url = `https://api.clickup.com/api/v2/list/${LIST_ID}/task?page=0${cur ? `&page=${cur}` : ""}&limit=50&statuses[]=em%20andamento`;
-      const res = await fetch(url, {
-        headers: { "Authorization": "pk_112105384_LPIVVG6KKNM9SYMAEV62CPZT4I8VAA2N" },
-      });
-      const data = await res.json();
-      const tasks = (data.tasks || []).map((t: any) => ({ id: t.id, name: t.name }));
-      setClientes((prev) => (cur ? [...prev, ...tasks] : tasks));
-      setCursor(data.last_page ? null : String((data.page || 0) + 1));
+      let page = 0;
+      let todos: { id: string; name: string }[] = [];
+      while (true) {
+        const url = `https://api.clickup.com/api/v2/list/${LIST_ID}/task?page=${page}&limit=100&statuses[]=em%20andamento`;
+        const res = await fetch(url, {
+          headers: { "Authorization": "pk_112105384_LPIVVG6KKNM9SYMAEV62CPZT4I8VAA2N" },
+        });
+        const data = await res.json();
+        const tasks = (data.tasks || []).map((t: any) => ({ id: t.id, name: t.name }));
+        todos = [...todos, ...tasks];
+        if (data.last_page || tasks.length === 0) break;
+        page++;
+      }
+      setClientes(todos);
+      setCursor(null);
     } catch {
       setErro("Erro ao buscar clientes. Verifique a conexão com o ClickUp.");
     }
