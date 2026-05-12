@@ -75,7 +75,7 @@ function Formulario({ taskId, taskName }: { taskId: string; taskName: string }) 
     <div style={styles.page}>
       <div style={styles.card}>
         <img
-          src="https://pages.greatpages.com.br/www.ecommercepuro.com.br/1776877996/imagens/desktop/14938-5a19bd7255a4a0c17fc1ff87fa8ee9a2.png"
+          src="https://raw.githubusercontent.com/victoralmeida-dot/vitejs-vite-tccsdkhj/main/public/logo_ep_preto-forms.png"
           alt="Ecommerce Puro"
           style={{ height: 52, objectFit: "contain", marginBottom: 20 }}
         />
